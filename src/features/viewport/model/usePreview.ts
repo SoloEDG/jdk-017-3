@@ -1,9 +1,10 @@
 import { watch, onBeforeUnmount, type Ref, ref } from "vue";
-import type { StudioDocument } from "../../../shared/types";
+import type { Projection, StudioDocument } from "../../../shared/types";
 import { renderPreview } from "../../projection";
 export function usePreview(
   doc: StudioDocument,
   canvas: Ref<HTMLCanvasElement | undefined>,
+  override?: Ref<Projection | null>,
 ) {
   const rendering = ref(false);
   let frame = 0;
@@ -13,6 +14,7 @@ export function usePreview(
       doc.asset,
       JSON.stringify(doc.projection),
       JSON.stringify(doc.edge),
+      JSON.stringify(override?.value ?? null),
     ],
     () => {
       cancelAnimationFrame(frame);
@@ -23,7 +25,7 @@ export function usePreview(
             canvas.value,
             {
               asset: doc.asset,
-              projection: { ...doc.projection },
+              projection: { ...(override?.value ?? doc.projection) },
               edge: { ...doc.edge },
             },
             600,

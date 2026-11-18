@@ -5,8 +5,10 @@ import { ProjectionPanel } from "../features/projection";
 import { ViewportPanel, ViewControls } from "../features/viewport";
 import { EdgePanel } from "../features/edge";
 import { ExportPanel } from "../features/export";
+import { MotionPanel, useMotion } from "../features/motion";
 import { useStudio } from "./useStudio";
 const doc = useStudio();
+const motion = useMotion(doc);
 </script>
 <template>
   <div class="workspace">
@@ -36,11 +38,11 @@ const doc = useStudio();
           <span>✳ &nbsp; MADE FOR YOUR PERSPECTIVE</span>
         </div>
       </aside>
-      <ViewportPanel :doc="doc" />
+      <ViewportPanel :doc="doc" :motion="motion" />
       <aside class="right-sidebar">
         <ViewControls :doc="doc" /><EdgePanel :doc="doc" /><ExportPanel
           :doc="doc"
-        />
+        /><MotionPanel :doc="doc" :motion="motion" />
       </aside>
     </div>
     <footer>
